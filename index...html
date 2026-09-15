@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Mounjaro · Método Sudoku (Domingo + Miércoles) – FITatHome®</title>
+<style>
+:root{--green:#4a6a4a;--green-light:#f0f5f0;--green-border:#c8dcc8;--blue:#4a6aaa;--blue-light:#eef2fa;--blue-border:#b8cce8;--orange:#c8802a;--orange-light:#fff6ed;--amber:#b87020;--purple:#8a6ac8;--purple-light:#f2eefb;--gray:#666;--gray-light:#f5f5f5;--dark:#1a1a1a;--radius:10px;--shadow:0 2px 8px rgba(0,0,0,0.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f0f0f0;color:var(--dark)}
+nav{background:white;border-bottom:1px solid #e0e0e0;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.nav-inner{max-width:820px;margin:0 auto;display:flex;align-items:center}
+.nav-title{padding:14px 12px;font-weight:700;font-size:14px;color:var(--green);white-space:nowrap}
+.nav-tabs{display:flex;overflow-x:auto;scrollbar-width:none;gap:2px;padding:8px 8px 8px 0}
+.nav-tabs::-webkit-scrollbar{display:none}
+.tab-btn{padding:7px 12px;border:none;background:var(--gray-light);border-radius:20px;cursor:pointer;font-size:12px;white-space:nowrap;color:var(--gray);font-weight:500;transition:all .2s}
+.tab-btn.active{background:var(--green);color:white}
+.tab-btn:hover:not(.active){background:var(--green-light);color:var(--green)}
+.wrap{max-width:820px;margin:16px auto 0;padding:0 12px 30px}
+.card{background:white;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
+.hero h1{font-size:20px;font-weight:800;margin-bottom:4px}
+.hero p{color:var(--gray);font-size:12.5px;line-height:1.5}
+.section{display:none}
+.section.active{display:block}
+.h2{font-size:16px;font-weight:800;margin:2px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--green)}
+.h3{font-size:13px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.pill{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:3px 8px;border-radius:20px;margin-right:5px}
+.pill.dom{background:var(--blue-light);color:var(--blue)}
+.pill.mie{background:var(--orange-light);color:var(--orange)}
+.pill.frozen{background:var(--purple-light);color:var(--purple)}
+.session-card{border-radius:var(--radius);padding:13px 15px;margin-bottom:12px;border:1px solid #eee}
+.session-card.dom{background:var(--blue-light);border-color:var(--blue-border)}
+.session-card.mie{background:var(--orange-light);border-color:#f0d0a0}
+.session-title{font-size:14px;font-weight:700;margin:4px 0 8px}
+.batch-row{display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0;border-bottom:1px dashed rgba(0,0,0,.08)}
+.tick-row{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:6px 2px;border-bottom:1px dashed rgba(0,0,0,.08);cursor:pointer;user-select:none}
+.tick-row input[type=checkbox]{width:16px;height:16px;flex-shrink:0;accent-color:var(--green)}
+.tick-row .tick-name{flex:1}
+.tick-row .tick-amt{font-weight:700;color:var(--gray);white-space:nowrap}
+.tick-row.checked .tick-name{text-decoration:line-through;color:#aaa}
+.tick-row.checked .tick-amt{color:#ccc}
+.tick-progress{font-size:10.5px;color:var(--gray);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin:6px 0 2px;display:flex;justify-content:space-between;align-items:center}
+.tick-reset{background:none;border:1px solid #ddd;border-radius:20px;padding:2px 9px;font-size:9.5px;color:var(--gray);cursor:pointer}
+.batch-row:last-child{border-bottom:none}
+.batch-name{color:var(--dark)}
+.batch-amt{font-weight:700;color:var(--gray)}
+.sauce-box{background:white;border-radius:8px;padding:8px 10px;margin-top:6px;font-size:12px;color:var(--gray);line-height:1.5}
+.sauce-box strong{color:var(--dark)}
+table.grid{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+table.grid th{background:var(--dark);color:white;padding:7px 6px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.4px}
+table.grid td{padding:7px 6px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+table.grid tr:nth-child(even){background:#fafafa}
+.day-lbl{font-weight:700;font-size:12px}
+.tipo-lbl{font-size:10px;color:var(--gray);text-transform:uppercase}
+.kcal-lbl{font-weight:700;color:var(--green);white-space:nowrap}
+.ci{background:var(--green-light);border:1px solid var(--green-border);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--dark);line-height:1.6;margin-bottom:12px}
+.method-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.method-card{background:var(--gray-light);border-radius:8px;padding:11px 13px}
+.method-card .mname{font-weight:700;font-size:13px;margin-bottom:2px}
+.method-card .msub{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.method-card .mtext{font-size:12px;color:var(--gray);line-height:1.5}
+.tip-box{background:var(--dark);color:white;border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.6;margin-top:10px}
+.tip-box strong{color:var(--orange-light)}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stat-box{border-radius:8px;padding:10px;text-align:center;background:var(--green-light)}
+.stat-box .val{font-size:17px;font-weight:700;color:var(--green)}
+.stat-box .lbl{font-size:10px;color:var(--gray);margin-top:2px}
+table.ref{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px}
+table.ref th{background:var(--dark);color:white;padding:7px 6px;text-align:left;font-size:10px;text-transform:uppercase}
+table.ref td{padding:7px 6px;border-bottom:1px solid #f0f0f0}
+table.ref tr:nth-child(even){background:#fafafa}
+.frozen-note{font-size:10px;color:var(--purple);font-weight:700}
+@media(max-width:480px){.stat-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* ---- Sudoku matrix ---- */
+.legend-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;font-size:11px;color:var(--gray)}
+.legend-row span{display:inline-flex;align-items:center;gap:5px}
+.legend-sw{width:11px;height:11px;border-radius:3px;display:inline-block}
+.sw-prot{background:#c98f8a}
+.sw-carb{background:#b7a68e}
+.sw-veg{background:#7a9b6e}
+.sw-sauce{background:#16303c}
+.meal-block{border:1px solid #eee;border-radius:12px;padding:12px;margin-bottom:12px;background:#fcfcfb}
+.meal-block-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}
+.meal-block-head .mday{font-weight:800;font-size:13.5px}
+.meal-block-head .mtipo{font-size:10.5px;color:var(--gray);text-transform:uppercase;letter-spacing:.4px;margin-left:6px}
+.meal-block-head .mkcal{font-size:11.5px;font-weight:700;color:var(--green);white-space:nowrap}
+.sudoku-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.sd-cell{border-radius:9px;padding:9px 10px;color:white;min-height:56px;display:flex;flex-direction:column;justify-content:center}
+.sd-cell .sd-cat{font-size:9px;text-transform:uppercase;letter-spacing:.5px;opacity:.85;font-weight:700;margin-bottom:2px}
+.sd-cell .sd-name{font-size:12.5px;font-weight:700;line-height:1.25}
+.sd-cell .sd-sub{font-size:10px;opacity:.85;margin-top:2px}
+.sd-prot{background:#c98f8a}
+.sd-carb{background:#a99879}
+.sd-veg{background:#7a9b6e}
+.sd-sauce{background:#16303c}
+.frozen-tag{display:inline-block;background:var(--purple-light);color:var(--purple);font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:6px}
+@media(min-width:520px){.sudoku-grid{grid-template-columns:repeat(4,1fr)}}
+
+table.matrix{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px;text-align:center}
+.matrix-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:10px}
+.matrix-wrap table.matrix{min-width:520px;margin-bottom:0}
+table.matrix th{background:var(--dark);color:white;padding:8px 4px;font-size:10.5px;text-transform:uppercase}
+table.matrix td{padding:9px 4px;border:1px solid #eee;font-weight:700}
+table.matrix td.rowhead{background:var(--gray-light);text-align:left;font-weight:700;font-size:11.5px;text-transform:none}
+td.ideal{background:#e3f3e3;color:#2f7a3f}
+td.ok{background:#fbf7e8;color:#a07d1a}
+td.avoid{background:#fbe6e6;color:#b03030}
+.triad-card{border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:5px solid}
+.triad-card.A{background:var(--blue-light);border-color:var(--blue)}
+.triad-card.B{background:var(--orange-light);border-color:var(--amber)}
+.triad-card.C{background:var(--purple-light);border-color:var(--purple)}
+.triad-title{font-weight:800;font-size:13px;margin-bottom:4px}
+.triad-items{font-size:12px;color:var(--gray)}
+.dish-card{border:1px solid #eee;border-radius:12px;padding:12px;margin-bottom:10px;background:#fcfcfb}
+.dish-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.dish-span{font-weight:800;font-size:13px}
+.dish-kcal{font-size:11.5px;font-weight:700;color:var(--green);white-space:nowrap}
+.cook-amount{margin-top:9px;background:var(--green-light);border:1px solid var(--green-border);border-radius:8px;padding:8px 10px;font-size:11.5px;line-height:1.5;color:var(--dark)}
+
+.pairing-map{border-radius:12px;padding:12px;margin:4px 0 14px;border:2px dashed}
+.pairing-map.dom{background:var(--blue-light);border-color:var(--blue-border)}
+.pairing-map.mie{background:var(--orange-light);border-color:#f0d0a0}
+.pairing-map-title{font-weight:800;font-size:12.5px;margin-bottom:8px}
+.pairing-map-grid{display:grid;grid-template-columns:1fr;gap:8px}
+.pair-sauce{background:white;border-radius:8px;padding:9px 11px}
+.pair-sauce-name{font-weight:700;font-size:12.5px;margin-bottom:4px}
+.pair-row{font-size:11.5px;margin-bottom:2px}
+.pair-good{color:#2f7a3f}
+.pair-bad{color:#b03030}
+.pair-why{font-size:10.5px;color:var(--gray);margin-top:4px;line-height:1.4;font-style:italic}
+@media(min-width:520px){.pairing-map-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav><div class="nav-inner">
+  <div class="nav-title">🥗 FITatHome® · Sudoku</div>
+  <div class="nav-tabs" id="navTabs"></div>
+</div></nav>
+<div class="wrap">
+  <div class="card hero">
+    <h1>Plan Mounjaro · Método Sudoku</h1>
+    <p>Cocinas 2 veces por semana (Domingo + Miércoles) y armas cada almuerzo/cena combinando proteína + carbohidrato + vegetales + salsa. Alta proteína, mismos ingredientes base de siempre.</p>
+  </div>
+  <div id="sections"></div>
+</div>
+<script>
+const DATA = {"weeks":[{"week":1,"meals":[{"dish":"S0","day":"Domingo","tipo":"Cena","session":"Domingo","frozen":false,"protein":"pechuga","sauce":"tzatziki","carb":"bulgur","veg_mix":[["pimientos",67],["tomate",67],["calabacin",66]],"kcal":379,"prot":49.3,"cook_carb_g":60,"cook_veg_mix":[["pimientos",134],["tomate",134],["calabacin",132]]},{"dish":"S0","day":"Lunes","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"pechuga","sauce":"tzatziki","carb":"papa","veg_mix":[["pimientos",67],["ejotes",67],["tomate",66]],"kcal":379,"prot":47.3,"cook_carb_g":260,"cook_veg_mix":[["pimientos",134],["ejotes",134],["tomate",132]]},{"dish":"S1","day":"Lunes","tipo":"Cena","session":"Domingo","frozen":false,"protein":"muslo","sauce":"pimiento","carb":"bulgur","veg_mix":[["tomate",67],["calabacin",67],["zanahoria",66]],"kcal":429,"prot":47.3,"cook_carb_g":60,"cook_veg_mix":[["tomate",134],["calabacin",134],["zanahoria",132]]},{"dish":"S1","day":"Martes","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"muslo","sauce":"pimiento","carb":"papa","veg_mix":[["calabacin",67],["pimientos",67],["zanahoria",66]],"kcal":428,"prot":45.3,"cook_carb_g":260,"cook_veg_mix":[["calabacin",134],["pimientos",134],["zanahoria",132]]},{"dish":"S2","day":"Martes","tipo":"Cena","session":"Domingo","frozen":false,"protein":"dorada","sauce":"mostaza","carb":"bulgur","veg_mix":[["zanahoria",67],["tomate",67],["pimientos",66]],"kcal":362,"prot":41.5,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["tomate",134],["pimientos",132]]},{"dish":"S2","day":"Miércoles","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"dorada","sauce":"mostaza","carb":"papa","veg_mix":[["pimientos",67],["tomate",67],["calabacin",66]],"kcal":349,"prot":39.8,"cook_carb_g":260,"cook_veg_mix":[["pimientos",134],["tomate",134],["calabacin",132]]},{"dish":"W0","day":"Miércoles","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":351,"prot":35.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W0","day":"Jueves","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":356,"prot":37.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W1","day":"Jueves","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"pechuga","sauce":"curcuma","carb":"bulgur","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":389,"prot":49.3,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"W1","day":"Viernes","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"pechuga","sauce":"curcuma","carb":"papa","veg_mix":[["ejotes",67],["zanahoria",67],["calabacin",66]],"kcal":381,"prot":47.7,"cook_carb_g":260,"cook_veg_mix":[["ejotes",134],["zanahoria",134],["calabacin",132]]},{"dish":"W2","day":"Viernes","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"muslo","sauce":"remolacha","carb":"camote","veg_mix":[["ensalada_mixta",200]],"kcal":452,"prot":45.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W2","day":"Sábado","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"muslo","sauce":"remolacha","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":442,"prot":47.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W3","day":"Sábado","tipo":"Cena","session":"Miércoles","frozen":true,"protein":"dorada","sauce":"jengibresoya","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":366,"prot":40.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W3","day":"Domingo","tipo":"Almuerzo","session":"Miércoles","frozen":true,"protein":"dorada","sauce":"jengibresoya","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":371,"prot":42.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]}],"dish_protein_batch":{"S0":520,"S1":880,"S2":584,"W0":520,"W1":520,"W2":880,"W3":584},"dish_info_summary":{"S0":{"protein":"pechuga","sauce":"tzatziki"},"S1":{"protein":"muslo","sauce":"pimiento"},"S2":{"protein":"dorada","sauce":"mostaza"},"W0":{"protein":"res_magra","sauce":"tomate"},"W1":{"protein":"pechuga","sauce":"curcuma"},"W2":{"protein":"muslo","sauce":"remolacha"},"W3":{"protein":"dorada","sauce":"jengibresoya"}},"sunday_shopping":{"proteinas":[["Pechuga de pollo",520],["Muslo de pollo (sin piel)",880],["Dorada",584]],"carbs":[["Bulgur",180],["Papa",780]],"veg":[["Pimientos",668],["Tomate (para cocinar)",668],["Calabacín",532],["Ejotes",134],["Zanahoria",398]],"salsas":[["Yogur griego 0% (Tzatziki)","1 taza"],["Pepino (Tzatziki)","0.5 unidad"],["Ajo (Tzatziki)","2 diente"],["Eneldo fresco (Tzatziki)","1 cda"],["Limón (Tzatziki)","1 unidad"],["Yogur griego 0% (Pimiento Asado Cremosa)","1 taza"],["Pimiento rojo asado (Pimiento Asado Cremosa)","0.5 unidad"],["Ajo (Pimiento Asado Cremosa)","1 diente"],["Pimentón dulce (Pimiento Asado Cremosa)","1 cdta"],["Limón (Pimiento Asado Cremosa)","1 unidad"],["Yogur griego 0% (Mostaza Agridulce Light)","0.75 taza"],["Mostaza Dijon (Mostaza Agridulce Light)","2 cda"],["Monk Fruit o alulosa (Mostaza Agridulce Light)","1 cdta"],["Limón (Mostaza Agridulce Light)","1 unidad"]]},"wednesday_shopping":{"proteinas":[["Carne de res magra (5% grasa)",520],["Pechuga de pollo",520],["Muslo de pollo (sin piel)",880],["Dorada",584]],"carbs":[["Papa",780],["Bulgur",240],["Camote",260]],"veg":[["Ensalada Mixta (remolacha, lechuga, pimiento crudo)",2400],["Zanahoria",268],["Pimientos",134],["Ejotes",266],["Calabacín",132]],"salsas":[["Tomate triturado (Salsa de Tomate)","1 taza"],["Ajo (Salsa de Tomate)","2 diente"],["Orégano seco (Salsa de Tomate)","1 cdta"],["Albahaca fresca (Salsa de Tomate)","0.25 taza"],["Yogur griego 0% (Cúrcuma-Jengibre Cremosa)","1 taza"],["Cúrcuma en polvo (Cúrcuma-Jengibre Cremosa)","1 cdta"],["Jengibre fresco (Cúrcuma-Jengibre Cremosa)","1 cda"],["Limón (Cúrcuma-Jengibre Cremosa)","1 unidad"],["Yogur griego 0% (Remolacha Cremosa)","1 taza"],["Remolacha asada (Remolacha Cremosa)","0.5 taza"],["Ajo (Remolacha Cremosa)","1 diente"],["Eneldo fresco (Remolacha Cremosa)","1 cdta"],["Limón (Remolacha Cremosa)","1 unidad"],["Yogur griego 0% (Jengibre-Soya Suave)","1 taza"],["Salsa de soya baja en sodio (Jengibre-Soya Suave)","1 cda"],["Jengibre fresco (Jengibre-Soya Suave)","1 cda"],["Aceite de ajonjolí (Jengibre-Soya Suave)","1 cdta"],["Limón (Jengibre-Soya Suave)","1 unidad"]]}},{"week":2,"meals":[{"dish":"S0","day":"Domingo","tipo":"Cena","session":"Domingo","frozen":false,"protein":"muslo","sauce":"hierbas","carb":"papa","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":430,"prot":45.3,"cook_carb_g":260,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"S0","day":"Lunes","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"muslo","sauce":"hierbas","carb":"bulgur","veg_mix":[["zanahoria",67],["tomate",67],["pimientos",66]],"kcal":431,"prot":47.0,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["tomate",134],["pimientos",132]]},{"dish":"S1","day":"Lunes","tipo":"Cena","session":"Domingo","frozen":false,"protein":"dorada","sauce":"curcuma","carb":"papa","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":359,"prot":40.3,"cook_carb_g":260,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"S1","day":"Martes","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"dorada","sauce":"curcuma","carb":"bulgur","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":364,"prot":42.3,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"S2","day":"Martes","tipo":"Cena","session":"Domingo","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":351,"prot":35.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"S2","day":"Miércoles","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":356,"prot":37.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W0","day":"Miércoles","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"pechuga","sauce":"pimiento","carb":"bulgur","veg_mix":[["tomate",67],["calabacin",67],["zanahoria",66]],"kcal":384,"prot":49.3,"cook_carb_g":60,"cook_veg_mix":[["tomate",134],["calabacin",134],["zanahoria",132]]},{"dish":"W0","day":"Jueves","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"pechuga","sauce":"pimiento","carb":"papa","veg_mix":[["calabacin",67],["pimientos",67],["zanahoria",66]],"kcal":383,"prot":47.3,"cook_carb_g":260,"cook_veg_mix":[["calabacin",134],["pimientos",134],["zanahoria",132]]},{"dish":"W1","day":"Jueves","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"muslo","sauce":"mostaza","carb":"papa","veg_mix":[["zanahoria",67],["tomate",67],["pimientos",66]],"kcal":427,"prot":44.5,"cook_carb_g":260,"cook_veg_mix":[["zanahoria",134],["tomate",134],["pimientos",132]]},{"dish":"W1","day":"Viernes","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"muslo","sauce":"mostaza","carb":"camote","veg_mix":[["ensalada_mixta",200]],"kcal":450,"prot":45.0,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W2","day":"Viernes","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"dorada","sauce":"jengibresoya","carb":"bulgur","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":367,"prot":42.3,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"W2","day":"Sábado","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"dorada","sauce":"jengibresoya","carb":"papa","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":362,"prot":40.3,"cook_carb_g":260,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"W3","day":"Sábado","tipo":"Cena","session":"Miércoles","frozen":true,"protein":"res_magra","sauce":"tomate","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":356,"prot":37.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W3","day":"Domingo","tipo":"Almuerzo","session":"Miércoles","frozen":true,"protein":"res_magra","sauce":"tomate","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":351,"prot":35.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]}],"dish_protein_batch":{"S0":880,"S1":584,"S2":520,"W0":520,"W1":880,"W2":584,"W3":520},"dish_info_summary":{"S0":{"protein":"muslo","sauce":"hierbas"},"S1":{"protein":"dorada","sauce":"curcuma"},"S2":{"protein":"res_magra","sauce":"tomate"},"W0":{"protein":"pechuga","sauce":"pimiento"},"W1":{"protein":"muslo","sauce":"mostaza"},"W2":{"protein":"dorada","sauce":"jengibresoya"},"W3":{"protein":"res_magra","sauce":"tomate"}},"sunday_shopping":{"proteinas":[["Muslo de pollo (sin piel)",880],["Dorada",584],["Carne de res magra (5% grasa)",520]],"carbs":[["Papa",780],["Bulgur",180]],"veg":[["Zanahoria",536],["Pimientos",534],["Ejotes",396],["Tomate (para cocinar)",134],["Ensalada Mixta (remolacha, lechuga, pimiento crudo)",800]],"salsas":[["Yogur griego 0% (Hierbas Verdes)","1 taza"],["Perejil fresco (Hierbas Verdes)","0.25 taza"],["Eneldo fresco (Hierbas Verdes)","2 cda"],["Ajo (Hierbas Verdes)","1 diente"],["Limón (Hierbas Verdes)","1 unidad"],["Yogur griego 0% (Cúrcuma-Jengibre Cremosa)","1 taza"],["Cúrcuma en polvo (Cúrcuma-Jengibre Cremosa)","1 cdta"],["Jengibre fresco (Cúrcuma-Jengibre Cremosa)","1 cda"],["Limón (Cúrcuma-Jengibre Cremosa)","1 unidad"],["Tomate triturado (Salsa de Tomate)","1 taza"],["Ajo (Salsa de Tomate)","2 diente"],["Orégano seco (Salsa de Tomate)","1 cdta"],["Albahaca fresca (Salsa de Tomate)","0.25 taza"]]},"wednesday_shopping":{"proteinas":[["Pechuga de pollo",520],["Muslo de pollo (sin piel)",880],["Dorada",584],["Carne de res magra (5% grasa)",520]],"carbs":[["Bulgur",180],["Papa",1040],["Camote",260]],"veg":[["Tomate (para cocinar)",268],["Calabacín",268],["Zanahoria",666],["Pimientos",534],["Ensalada Mixta (remolacha, lechuga, pimiento crudo)",1200],["Ejotes",264]],"salsas":[["Yogur griego 0% (Pimiento Asado Cremosa)","1 taza"],["Pimiento rojo asado (Pimiento Asado Cremosa)","0.5 unidad"],["Ajo (Pimiento Asado Cremosa)","1 diente"],["Pimentón dulce (Pimiento Asado Cremosa)","1 cdta"],["Limón (Pimiento Asado Cremosa)","1 unidad"],["Yogur griego 0% (Mostaza Agridulce Light)","0.75 taza"],["Mostaza Dijon (Mostaza Agridulce Light)","2 cda"],["Monk Fruit o alulosa (Mostaza Agridulce Light)","1 cdta"],["Limón (Mostaza Agridulce Light)","1 unidad"],["Yogur griego 0% (Jengibre-Soya Suave)","1 taza"],["Salsa de soya baja en sodio (Jengibre-Soya Suave)","1 cda"],["Jengibre fresco (Jengibre-Soya Suave)","1 cda"],["Aceite de ajonjolí (Jengibre-Soya Suave)","1 cdta"],["Limón (Jengibre-Soya Suave)","1 unidad"],["Tomate triturado (Salsa de Tomate)","1 taza"],["Ajo (Salsa de Tomate)","2 diente"],["Orégano seco (Salsa de Tomate)","1 cdta"],["Albahaca fresca (Salsa de Tomate)","0.25 taza"]]}},{"week":3,"meals":[{"dish":"S0","day":"Domingo","tipo":"Cena","session":"Domingo","frozen":false,"protein":"dorada","sauce":"pimiento","carb":"bulgur","veg_mix":[["tomate",67],["calabacin",67],["zanahoria",66]],"kcal":359,"prot":42.3,"cook_carb_g":60,"cook_veg_mix":[["tomate",134],["calabacin",134],["zanahoria",132]]},{"dish":"S0","day":"Lunes","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"dorada","sauce":"pimiento","carb":"papa","veg_mix":[["calabacin",67],["pimientos",67],["zanahoria",66]],"kcal":358,"prot":40.3,"cook_carb_g":260,"cook_veg_mix":[["calabacin",134],["pimientos",134],["zanahoria",132]]},{"dish":"S1","day":"Lunes","tipo":"Cena","session":"Domingo","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":356,"prot":37.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"S1","day":"Martes","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":351,"prot":35.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"S2","day":"Martes","tipo":"Cena","session":"Domingo","frozen":false,"protein":"pechuga","sauce":"jengibresoya","carb":"camote","veg_mix":[["ensalada_mixta",200]],"kcal":406,"prot":47.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"S2","day":"Miércoles","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"pechuga","sauce":"jengibresoya","carb":"bulgur","veg_mix":[["ejotes",67],["zanahoria",67],["calabacin",66]],"kcal":389,"prot":49.7,"cook_carb_g":60,"cook_veg_mix":[["ejotes",134],["zanahoria",134],["calabacin",132]]},{"dish":"W0","day":"Miércoles","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"muslo","sauce":"curcuma","carb":"bulgur","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":434,"prot":47.3,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"W0","day":"Jueves","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"muslo","sauce":"curcuma","carb":"papa","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":429,"prot":45.3,"cook_carb_g":260,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"W1","day":"Jueves","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"dorada","sauce":"remolacha","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":367,"prot":40.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W1","day":"Viernes","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"dorada","sauce":"remolacha","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":372,"prot":42.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W2","day":"Viernes","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":351,"prot":35.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W2","day":"Sábado","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":356,"prot":37.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W3","day":"Sábado","tipo":"Cena","session":"Miércoles","frozen":true,"protein":"pechuga","sauce":"cilantro","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":388,"prot":47.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W3","day":"Domingo","tipo":"Almuerzo","session":"Miércoles","frozen":true,"protein":"pechuga","sauce":"cilantro","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":393,"prot":49.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]}],"dish_protein_batch":{"S0":584,"S1":520,"S2":520,"W0":880,"W1":584,"W2":520,"W3":520},"dish_info_summary":{"S0":{"protein":"dorada","sauce":"pimiento"},"S1":{"protein":"res_magra","sauce":"tomate"},"S2":{"protein":"pechuga","sauce":"jengibresoya"},"W0":{"protein":"muslo","sauce":"curcuma"},"W1":{"protein":"dorada","sauce":"remolacha"},"W2":{"protein":"res_magra","sauce":"tomate"},"W3":{"protein":"pechuga","sauce":"cilantro"}},"sunday_shopping":{"proteinas":[["Dorada",584],["Carne de res magra (5% grasa)",520],["Pechuga de pollo",520]],"carbs":[["Bulgur",180],["Papa",520],["Camote",260]],"veg":[["Tomate (para cocinar)",134],["Calabacín",400],["Zanahoria",398],["Pimientos",134],["Ensalada Mixta (remolacha, lechuga, pimiento crudo)",1200],["Ejotes",134]],"salsas":[["Yogur griego 0% (Pimiento Asado Cremosa)","1 taza"],["Pimiento rojo asado (Pimiento Asado Cremosa)","0.5 unidad"],["Ajo (Pimiento Asado Cremosa)","1 diente"],["Pimentón dulce (Pimiento Asado Cremosa)","1 cdta"],["Limón (Pimiento Asado Cremosa)","1 unidad"],["Tomate triturado (Salsa de Tomate)","1 taza"],["Ajo (Salsa de Tomate)","2 diente"],["Orégano seco (Salsa de Tomate)","1 cdta"],["Albahaca fresca (Salsa de Tomate)","0.25 taza"],["Yogur griego 0% (Jengibre-Soya Suave)","1 taza"],["Salsa de soya baja en sodio (Jengibre-Soya Suave)","1 cda"],["Jengibre fresco (Jengibre-Soya Suave)","1 cda"],["Aceite de ajonjolí (Jengibre-Soya Suave)","1 cdta"],["Limón (Jengibre-Soya Suave)","1 unidad"]]},"wednesday_shopping":{"proteinas":[["Muslo de pollo (sin piel)",880],["Dorada",584],["Carne de res magra (5% grasa)",520],["Pechuga de pollo",520]],"carbs":[["Bulgur",240],["Papa",1040]],"veg":[["Zanahoria",268],["Pimientos",268],["Ejotes",264],["Ensalada Mixta (remolacha, lechuga, pimiento crudo)",2400]],"salsas":[["Yogur griego 0% (Cúrcuma-Jengibre Cremosa)","1 taza"],["Cúrcuma en polvo (Cúrcuma-Jengibre Cremosa)","1 cdta"],["Jengibre fresco (Cúrcuma-Jengibre Cremosa)","1 cda"],["Limón (Cúrcuma-Jengibre Cremosa)","1 unidad"],["Yogur griego 0% (Remolacha Cremosa)","1 taza"],["Remolacha asada (Remolacha Cremosa)","0.5 taza"],["Ajo (Remolacha Cremosa)","1 diente"],["Eneldo fresco (Remolacha Cremosa)","1 cdta"],["Limón (Remolacha Cremosa)","1 unidad"],["Tomate triturado (Salsa de Tomate)","1 taza"],["Ajo (Salsa de Tomate)","2 diente"],["Orégano seco (Salsa de Tomate)","1 cdta"],["Albahaca fresca (Salsa de Tomate)","0.25 taza"],["Yogur griego 0% (Cilantro-Lima Cremosa)","1 taza"],["Cilantro fresco (Cilantro-Lima Cremosa)","0.5 taza"],["Ajo (Cilantro-Lima Cremosa)","2 diente"],["Limón (Cilantro-Lima Cremosa)","1 unidad"]]}},{"week":4,"meals":[{"dish":"S0","day":"Domingo","tipo":"Cena","session":"Domingo","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":351,"prot":35.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"S0","day":"Lunes","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":356,"prot":37.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"S1","day":"Lunes","tipo":"Cena","session":"Domingo","frozen":false,"protein":"pechuga","sauce":"remolacha","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":392,"prot":47.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"S1","day":"Martes","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"pechuga","sauce":"remolacha","carb":"camote","veg_mix":[["ensalada_mixta",200]],"kcal":407,"prot":47.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"S2","day":"Martes","tipo":"Cena","session":"Domingo","frozen":false,"protein":"muslo","sauce":"balsamico","carb":"bulgur","veg_mix":[["pimientos",67],["tomate",67],["calabacin",66]],"kcal":423,"prot":47.3,"cook_carb_g":60,"cook_veg_mix":[["pimientos",134],["tomate",134],["calabacin",132]]},{"dish":"S2","day":"Miércoles","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"muslo","sauce":"balsamico","carb":"papa","veg_mix":[["pimientos",67],["ejotes",67],["tomate",66]],"kcal":423,"prot":45.3,"cook_carb_g":260,"cook_veg_mix":[["pimientos",134],["ejotes",134],["tomate",132]]},{"dish":"W0","day":"Miércoles","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"dorada","sauce":"mostaza","carb":"bulgur","veg_mix":[["zanahoria",67],["tomate",67],["pimientos",66]],"kcal":362,"prot":41.5,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["tomate",134],["pimientos",132]]},{"dish":"W0","day":"Jueves","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"dorada","sauce":"mostaza","carb":"papa","veg_mix":[["pimientos",67],["tomate",67],["calabacin",66]],"kcal":349,"prot":39.8,"cook_carb_g":260,"cook_veg_mix":[["pimientos",134],["tomate",134],["calabacin",132]]},{"dish":"W1","day":"Jueves","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":356,"prot":37.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W1","day":"Viernes","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":351,"prot":35.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W2","day":"Viernes","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"pechuga","sauce":"cilantro","carb":"bulgur","veg_mix":[["tomate",67],["calabacin",67],["zanahoria",66]],"kcal":381,"prot":49.3,"cook_carb_g":60,"cook_veg_mix":[["tomate",134],["calabacin",134],["zanahoria",132]]},{"dish":"W2","day":"Sábado","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"pechuga","sauce":"cilantro","carb":"papa","veg_mix":[["calabacin",67],["pimientos",67],["zanahoria",66]],"kcal":380,"prot":47.3,"cook_carb_g":260,"cook_veg_mix":[["calabacin",134],["pimientos",134],["zanahoria",132]]},{"dish":"W3","day":"Sábado","tipo":"Cena","session":"Miércoles","frozen":true,"protein":"muslo","sauce":"tzatziki","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":440,"prot":47.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W3","day":"Domingo","tipo":"Almuerzo","session":"Miércoles","frozen":true,"protein":"muslo","sauce":"tzatziki","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":435,"prot":45.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]}],"dish_protein_batch":{"S0":520,"S1":520,"S2":880,"W0":584,"W1":520,"W2":520,"W3":880},"dish_info_summary":{"S0":{"protein":"res_magra","sauce":"tomate"},"S1":{"protein":"pechuga","sauce":"remolacha"},"S2":{"protein":"muslo","sauce":"balsamico"},"W0":{"protein":"dorada","sauce":"mostaza"},"W1":{"protein":"res_magra","sauce":"tomate"},"W2":{"protein":"pechuga","sauce":"cilantro"},"W3":{"protein":"muslo","sauce":"tzatziki"}},"sunday_shopping":{"proteinas":[["Carne de res magra (5% grasa)",520],["Pechuga de pollo",520],["Muslo de pollo (sin piel)",880]],"carbs":[["Papa",780],["Bulgur",120],["Camote",260]],"veg":[["Ensalada Mixta (remolacha, lechuga, pimiento crudo)",1600],["Pimientos",268],["Tomate (para cocinar)",266],["Calabacín",132],["Ejotes",134]],"salsas":[["Tomate triturado (Salsa de Tomate)","1 taza"],["Ajo (Salsa de Tomate)","2 diente"],["Orégano seco (Salsa de Tomate)","1 cdta"],["Albahaca fresca (Salsa de Tomate)","0.25 taza"],["Yogur griego 0% (Remolacha Cremosa)","1 taza"],["Remolacha asada (Remolacha Cremosa)","0.5 taza"],["Ajo (Remolacha Cremosa)","1 diente"],["Eneldo fresco (Remolacha Cremosa)","1 cdta"],["Limón (Remolacha Cremosa)","1 unidad"],["Yogur griego 0% (Albahaca-Balsámico)","1 taza"],["Vinagre balsámico (Albahaca-Balsámico)","2 cda"],["Monk Fruit o alulosa (Albahaca-Balsámico)","1 cdta"],["Ajo (Albahaca-Balsámico)","1 diente"],["Albahaca fresca (Albahaca-Balsámico)","0.25 taza"]]},"wednesday_shopping":{"proteinas":[["Dorada",584],["Carne de res magra (5% grasa)",520],["Pechuga de pollo",520],["Muslo de pollo (sin piel)",880]],"carbs":[["Bulgur",240],["Papa",1040]],"veg":[["Zanahoria",398],["Tomate (para cocinar)",402],["Pimientos",400],["Calabacín",400],["Ensalada Mixta (remolacha, lechuga, pimiento crudo)",1600]],"salsas":[["Yogur griego 0% (Mostaza Agridulce Light)","0.75 taza"],["Mostaza Dijon (Mostaza Agridulce Light)","2 cda"],["Monk Fruit o alulosa (Mostaza Agridulce Light)","1 cdta"],["Limón (Mostaza Agridulce Light)","1 unidad"],["Tomate triturado (Salsa de Tomate)","1 taza"],["Ajo (Salsa de Tomate)","2 diente"],["Orégano seco (Salsa de Tomate)","1 cdta"],["Albahaca fresca (Salsa de Tomate)","0.25 taza"],["Yogur griego 0% (Cilantro-Lima Cremosa)","1 taza"],["Cilantro fresco (Cilantro-Lima Cremosa)","0.5 taza"],["Ajo (Cilantro-Lima Cremosa)","2 diente"],["Limón (Cilantro-Lima Cremosa)","1 unidad"],["Yogur griego 0% (Tzatziki)","1 taza"],["Pepino (Tzatziki)","0.5 unidad"],["Ajo (Tzatziki)","2 diente"],["Eneldo fresco (Tzatziki)","1 cda"],["Limón (Tzatziki)","1 unidad"]]}},{"week":5,"meals":[{"dish":"S0","day":"Domingo","tipo":"Cena","session":"Domingo","frozen":false,"protein":"pechuga","sauce":"mostaza","carb":"bulgur","veg_mix":[["zanahoria",67],["tomate",67],["pimientos",66]],"kcal":387,"prot":48.5,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["tomate",134],["pimientos",132]]},{"dish":"S0","day":"Lunes","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"pechuga","sauce":"mostaza","carb":"papa","veg_mix":[["pimientos",67],["tomate",67],["calabacin",66]],"kcal":374,"prot":46.8,"cook_carb_g":260,"cook_veg_mix":[["pimientos",134],["tomate",134],["calabacin",132]]},{"dish":"S1","day":"Lunes","tipo":"Cena","session":"Domingo","frozen":false,"protein":"muslo","sauce":"jengibresoya","carb":"camote","veg_mix":[["ensalada_mixta",200]],"kcal":451,"prot":45.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"S1","day":"Martes","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"muslo","sauce":"jengibresoya","carb":"bulgur","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":437,"prot":47.3,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"S2","day":"Martes","tipo":"Cena","session":"Domingo","frozen":false,"protein":"dorada","sauce":"cilantro","carb":"bulgur","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":364,"prot":42.3,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"S2","day":"Miércoles","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"dorada","sauce":"cilantro","carb":"papa","veg_mix":[["zanahoria",67],["tomate",67],["pimientos",66]],"kcal":355,"prot":40.0,"cook_carb_g":260,"cook_veg_mix":[["zanahoria",134],["tomate",134],["pimientos",132]]},{"dish":"W0","day":"Miércoles","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":351,"prot":35.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W0","day":"Jueves","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":356,"prot":37.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W1","day":"Jueves","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"pechuga","sauce":"balsamico","carb":"papa","veg_mix":[["pimientos",67],["tomate",67],["calabacin",66]],"kcal":373,"prot":47.3,"cook_carb_g":260,"cook_veg_mix":[["pimientos",134],["tomate",134],["calabacin",132]]},{"dish":"W1","day":"Viernes","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"pechuga","sauce":"balsamico","carb":"camote","veg_mix":[["ensalada_mixta",200]],"kcal":404,"prot":47.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W2","day":"Viernes","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"muslo","sauce":"tzatziki","carb":"papa","veg_mix":[["pimientos",67],["ejotes",67],["tomate",66]],"kcal":424,"prot":45.3,"cook_carb_g":260,"cook_veg_mix":[["pimientos",134],["ejotes",134],["tomate",132]]},{"dish":"W2","day":"Sábado","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"muslo","sauce":"tzatziki","carb":"bulgur","veg_mix":[["ejotes",67],["zanahoria",67],["calabacin",66]],"kcal":433,"prot":47.7,"cook_carb_g":60,"cook_veg_mix":[["ejotes",134],["zanahoria",134],["calabacin",132]]},{"dish":"W3","day":"Sábado","tipo":"Cena","session":"Miércoles","frozen":true,"protein":"dorada","sauce":"hierbas","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":364,"prot":40.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W3","day":"Domingo","tipo":"Almuerzo","session":"Miércoles","frozen":true,"protein":"dorada","sauce":"hierbas","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":369,"prot":42.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]}],"dish_protein_batch":{"S0":520,"S1":880,"S2":584,"W0":520,"W1":520,"W2":880,"W3":584},"dish_info_summary":{"S0":{"protein":"pechuga","sauce":"mostaza"},"S1":{"protein":"muslo","sauce":"jengibresoya"},"S2":{"protein":"dorada","sauce":"cilantro"},"W0":{"protein":"res_magra","sauce":"tomate"},"W1":{"protein":"pechuga","sauce":"balsamico"},"W2":{"protein":"muslo","sauce":"tzatziki"},"W3":{"protein":"dorada","sauce":"hierbas"}},"sunday_shopping":{"proteinas":[["Pechuga de pollo",520],["Muslo de pollo (sin piel)",880],["Dorada",584]],"carbs":[["Bulgur",180],["Papa",520],["Camote",260]],"veg":[["Zanahoria",536],["Tomate (para cocinar)",402],["Pimientos",666],["Calabacín",132],["Ensalada Mixta (remolacha, lechuga, pimiento crudo)",400],["Ejotes",264]],"salsas":[["Yogur griego 0% (Mostaza Agridulce Light)","0.75 taza"],["Mostaza Dijon (Mostaza Agridulce Light)","2 cda"],["Monk Fruit o alulosa (Mostaza Agridulce Light)","1 cdta"],["Limón (Mostaza Agridulce Light)","1 unidad"],["Yogur griego 0% (Jengibre-Soya Suave)","1 taza"],["Salsa de soya baja en sodio (Jengibre-Soya Suave)","1 cda"],["Jengibre fresco (Jengibre-Soya Suave)","1 cda"],["Aceite de ajonjolí (Jengibre-Soya Suave)","1 cdta"],["Limón (Jengibre-Soya Suave)","1 unidad"],["Yogur griego 0% (Cilantro-Lima Cremosa)","1 taza"],["Cilantro fresco (Cilantro-Lima Cremosa)","0.5 taza"],["Ajo (Cilantro-Lima Cremosa)","2 diente"],["Limón (Cilantro-Lima Cremosa)","1 unidad"]]},"wednesday_shopping":{"proteinas":[["Carne de res magra (5% grasa)",520],["Pechuga de pollo",520],["Muslo de pollo (sin piel)",880],["Dorada",584]],"carbs":[["Papa",1040],["Bulgur",180],["Camote",260]],"veg":[["Ensalada Mixta (remolacha, lechuga, pimiento crudo)",2000],["Pimientos",268],["Tomate (para cocinar)",266],["Calabacín",264],["Ejotes",268],["Zanahoria",134]],"salsas":[["Tomate triturado (Salsa de Tomate)","1 taza"],["Ajo (Salsa de Tomate)","2 diente"],["Orégano seco (Salsa de Tomate)","1 cdta"],["Albahaca fresca (Salsa de Tomate)","0.25 taza"],["Yogur griego 0% (Albahaca-Balsámico)","1 taza"],["Vinagre balsámico (Albahaca-Balsámico)","2 cda"],["Monk Fruit o alulosa (Albahaca-Balsámico)","1 cdta"],["Ajo (Albahaca-Balsámico)","1 diente"],["Albahaca fresca (Albahaca-Balsámico)","0.25 taza"],["Yogur griego 0% (Tzatziki)","1 taza"],["Pepino (Tzatziki)","0.5 unidad"],["Ajo (Tzatziki)","2 diente"],["Eneldo fresco (Tzatziki)","1 cda"],["Limón (Tzatziki)","1 unidad"],["Yogur griego 0% (Hierbas Verdes)","1 taza"],["Perejil fresco (Hierbas Verdes)","0.25 taza"],["Eneldo fresco (Hierbas Verdes)","2 cda"],["Ajo (Hierbas Verdes)","1 diente"],["Limón (Hierbas Verdes)","1 unidad"]]}},{"week":6,"meals":[{"dish":"S0","day":"Domingo","tipo":"Cena","session":"Domingo","frozen":false,"protein":"muslo","sauce":"remolacha","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":437,"prot":45.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"S0","day":"Lunes","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"muslo","sauce":"remolacha","carb":"camote","veg_mix":[["ensalada_mixta",200]],"kcal":452,"prot":45.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"S1","day":"Lunes","tipo":"Cena","session":"Domingo","frozen":false,"protein":"dorada","sauce":"balsamico","carb":"papa","veg_mix":[["pimientos",67],["tomate",67],["calabacin",66]],"kcal":348,"prot":40.3,"cook_carb_g":260,"cook_veg_mix":[["pimientos",134],["tomate",134],["calabacin",132]]},{"dish":"S1","day":"Martes","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"dorada","sauce":"balsamico","carb":"bulgur","veg_mix":[["pimientos",67],["ejotes",67],["tomate",66]],"kcal":358,"prot":42.3,"cook_carb_g":60,"cook_veg_mix":[["pimientos",134],["ejotes",134],["tomate",132]]},{"dish":"S2","day":"Martes","tipo":"Cena","session":"Domingo","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":351,"prot":35.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"S2","day":"Miércoles","tipo":"Almuerzo","session":"Domingo","frozen":false,"protein":"res_magra","sauce":"tomate","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":356,"prot":37.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W0","day":"Miércoles","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"pechuga","sauce":"jengibresoya","carb":"bulgur","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":392,"prot":49.3,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"W0","day":"Jueves","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"pechuga","sauce":"jengibresoya","carb":"papa","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":387,"prot":47.3,"cook_carb_g":260,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"W1","day":"Jueves","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"muslo","sauce":"cilantro","carb":"bulgur","veg_mix":[["zanahoria",67],["pimientos",67],["ejotes",66]],"kcal":434,"prot":47.3,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["pimientos",134],["ejotes",132]]},{"dish":"W1","day":"Viernes","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"muslo","sauce":"cilantro","carb":"papa","veg_mix":[["zanahoria",67],["tomate",67],["pimientos",66]],"kcal":425,"prot":45.0,"cook_carb_g":260,"cook_veg_mix":[["zanahoria",134],["tomate",134],["pimientos",132]]},{"dish":"W2","day":"Viernes","tipo":"Cena","session":"Miércoles","frozen":false,"protein":"dorada","sauce":"hierbas","carb":"bulgur","veg_mix":[["zanahoria",67],["tomate",67],["pimientos",66]],"kcal":361,"prot":42.0,"cook_carb_g":60,"cook_veg_mix":[["zanahoria",134],["tomate",134],["pimientos",132]]},{"dish":"W2","day":"Sábado","tipo":"Almuerzo","session":"Miércoles","frozen":false,"protein":"dorada","sauce":"hierbas","carb":"papa","veg_mix":[["pimientos",67],["tomate",67],["calabacin",66]],"kcal":348,"prot":40.3,"cook_carb_g":260,"cook_veg_mix":[["pimientos",134],["tomate",134],["calabacin",132]]},{"dish":"W3","day":"Sábado","tipo":"Cena","session":"Miércoles","frozen":true,"protein":"res_magra","sauce":"tomate","carb":"bulgur","veg_mix":[["ensalada_mixta",200]],"kcal":356,"prot":37.5,"cook_carb_g":60,"cook_veg_mix":[["ensalada_mixta",400]]},{"dish":"W3","day":"Domingo","tipo":"Almuerzo","session":"Miércoles","frozen":true,"protein":"res_magra","sauce":"tomate","carb":"papa","veg_mix":[["ensalada_mixta",200]],"kcal":351,"prot":35.5,"cook_carb_g":260,"cook_veg_mix":[["ensalada_mixta",400]]}],"dish_protein_batch":{"S0":880,"S1":584,"S2":520,"W0":520,"W1":880,"W2":584,"W3":520},"dish_info_summary":{"S0":{"protein":"muslo","sauce":"remolacha"},"S1":{"protein":"dorada","sauce":"balsamico"},"S2":{"protein":"res_magra","sauce":"tomate"},"W0":{"protein":"pechuga","sauce":"jengibresoya"},"W1":{"protein":"muslo","sauce":"cilantro"},"W2":{"protein":"dorada","sauce":"hierbas"},"W3":{"protein":"res_magra","sauce":"tomate"}},"sunday_shopping":{"proteinas":[["Muslo de pollo (sin piel)",880],["Dorada",584],["Carne de res magra (5% grasa)",520]],"carbs":[["Papa",780],["Camote",260],["Bulgur",120]],"veg":[["Ensalada Mixta (remolacha, lechuga, pimiento crudo)",1600],["Pimientos",268],["Tomate (para cocinar)",266],["Calabacín",132],["Ejotes",134]],"salsas":[["Yogur griego 0% (Remolacha Cremosa)","1 taza"],["Remolacha asada (Remolacha Cremosa)","0.5 taza"],["Ajo (Remolacha Cremosa)","1 diente"],["Eneldo fresco (Remolacha Cremosa)","1 cdta"],["Limón (Remolacha Cremosa)","1 unidad"],["Yogur griego 0% (Albahaca-Balsámico)","1 taza"],["Vinagre balsámico (Albahaca-Balsámico)","2 cda"],["Monk Fruit o alulosa (Albahaca-Balsámico)","1 cdta"],["Ajo (Albahaca-Balsámico)","1 diente"],["Albahaca fresca (Albahaca-Balsámico)","0.25 taza"],["Tomate triturado (Salsa de Tomate)","1 taza"],["Ajo (Salsa de Tomate)","2 diente"],["Orégano seco (Salsa de Tomate)","1 cdta"],["Albahaca fresca (Salsa de Tomate)","0.25 taza"]]},"wednesday_shopping":{"proteinas":[["Pechuga de pollo",520],["Muslo de pollo (sin piel)",880],["Dorada",584],["Carne de res magra (5% grasa)",520]],"carbs":[["Bulgur",240],["Papa",1040]],"veg":[["Zanahoria",670],["Pimientos",800],["Ejotes",396],["Tomate (para cocinar)",402],["Calabacín",132],["Ensalada Mixta (remolacha, lechuga, pimiento crudo)",800]],"salsas":[["Yogur griego 0% (Jengibre-Soya Suave)","1 taza"],["Salsa de soya baja en sodio (Jengibre-Soya Suave)","1 cda"],["Jengibre fresco (Jengibre-Soya Suave)","1 cda"],["Aceite de ajonjolí (Jengibre-Soya Suave)","1 cdta"],["Limón (Jengibre-Soya Suave)","1 unidad"],["Yogur griego 0% (Cilantro-Lima Cremosa)","1 taza"],["Cilantro fresco (Cilantro-Lima Cremosa)","0.5 taza"],["Ajo (Cilantro-Lima Cremosa)","2 diente"],["Limón (Cilantro-Lima Cremosa)","1 unidad"],["Yogur griego 0% (Hierbas Verdes)","1 taza"],["Perejil fresco (Hierbas Verdes)","0.25 taza"],["Eneldo fresco (Hierbas Verdes)","2 cda"],["Ajo (Hierbas Verdes)","1 diente"],["Limón (Hierbas Verdes)","1 unidad"],["Tomate triturado (Salsa de Tomate)","1 taza"],["Ajo (Salsa de Tomate)","2 diente"],["Orégano seco (Salsa de Tomate)","1 cdta"],["Albahaca fresca (Salsa de Tomate)","0.25 taza"]]}}],"proteins":{"pechuga":{"name":"Pechuga de pollo","raw_g":130,"kcal":215,"prot":40,"carb":0,"fat":4,"cooked_g":98},"muslo":{"name":"Muslo de pollo (sin piel)","raw_g":220,"kcal":260,"prot":38,"carb":0,"fat":11,"cooked_g":135},"dorada":{"name":"Dorada","raw_g":146,"kcal":190,"prot":33,"carb":0,"fat":5,"cooked_g":110},"res_magra":{"name":"Carne de res magra (5% grasa)","raw_g":130,"kcal":180,"prot":30,"carb":0,"fat":6,"cooked_g":97}},"carbs":{"papa":{"name":"Papa","raw_g":130,"kcal":100,"prot":2,"carb":23,"fat":0,"cooked_g":105},"camote":{"name":"Camote","raw_g":130,"kcal":115,"prot":2,"carb":27,"fat":0,"cooked_g":110},"bulgur":{"name":"Bulgur","raw_g":30,"kcal":105,"prot":4,"carb":22,"fat":0.5,"cooked_g":90}},"veg":{"ejotes":{"name":"Ejotes","g":200,"kcal":50,"prot":3,"carb":10,"fat":0},"zanahoria":{"name":"Zanahoria","g":200,"kcal":58,"prot":2,"carb":13,"fat":0},"calabacin":{"name":"Calabacín","g":200,"kcal":36,"prot":3,"carb":7,"fat":0},"pimientos":{"name":"Pimientos","g":200,"kcal":46,"prot":2,"carb":9,"fat":0},"tomate":{"name":"Tomate (para cocinar)","g":200,"kcal":36,"prot":2,"carb":8,"fat":0},"ensalada_mixta":{"name":"Ensalada Mixta (remolacha, lechuga, pimiento crudo)","g":200,"kcal":55,"prot":2.5,"carb":11,"fat":0.2}},"sauces":{"tzatziki":{"name":"Tzatziki","style":"Griega","kcal":20,"prot":3,"carb":1,"fat":0.5,"recipe":"1 taza yogur griego 0%, ½ pepino rallado y escurrido, 2 dientes de ajo, 1 cda eneldo, jugo de limón, sal"},"hierbas":{"name":"Hierbas Verdes","style":"Mediterránea","kcal":19,"prot":3,"carb":1,"fat":0.5,"recipe":"1 taza yogur griego 0%, ¼ taza perejil fresco picado, 2 cdas eneldo fresco, 1 diente de ajo, jugo y ralladura de limón, sal"},"pimiento":{"name":"Pimiento Asado Cremosa","style":"Mediterránea","kcal":21,"prot":3,"carb":2,"fat":0.4,"recipe":"1 taza yogur griego 0%, ½ pimiento rojo asado (de frasco o al horno) licuado, 1 diente de ajo, 1 cdta pimentón dulce, jugo de limón, sal"},"curcuma":{"name":"Cúrcuma-Jengibre Cremosa","style":"Cálida (sin grasa)","kcal":18,"prot":3,"carb":1,"fat":0,"recipe":"1 taza yogur griego 0%, 1 cdta cúrcuma, 1 cda jengibre rallado, jugo de limón, sal"},"mostaza":{"name":"Mostaza Agridulce Light","style":"Universal","kcal":20,"prot":2.5,"carb":1,"fat":0.5,"recipe":"¾ taza yogur griego 0%, 2 cdas mostaza Dijon (suave, no picante), Monk Fruit o alulosa al gusto, jugo de limón, sal y pimienta"},"remolacha":{"name":"Remolacha Cremosa","style":"Europea","kcal":22,"prot":3,"carb":2,"fat":0.4,"recipe":"1 taza yogur griego 0%, ½ taza remolacha asada y triturada, 1 diente de ajo, jugo de limón, 1 cdta eneldo, sal"},"jengibresoya":{"name":"Jengibre-Soya Suave","style":"Asiática (sin picante)","kcal":21,"prot":3,"carb":1,"fat":0.5,"recipe":"1 taza yogur griego 0%, 1 cda salsa de soya baja en sodio, 1 cda jengibre rallado, 1 cdta aceite de ajonjolí, jugo de limón (sin chile ni sriracha)"},"tomate":{"name":"Salsa de Tomate","style":"Clásica (solo con res)","kcal":16,"prot":1,"carb":3,"fat":0.2,"recipe":"1 taza tomate triturado, 2 dientes de ajo, 1 cdta orégano seco, albahaca fresca picada, sal y pimienta, cocido a fuego lento 10 min"},"balsamico":{"name":"Albahaca-Balsámico","style":"Italiana","kcal":19,"prot":3,"carb":2,"fat":0.3,"recipe":"1 taza yogur griego 0%, 2 cdas vinagre balsámico, Monk Fruit o alulosa al gusto, 1 diente de ajo, 1/4 taza albahaca fresca"},"cilantro":{"name":"Cilantro-Lima Cremosa","style":"Cilantro-Lima (México/Tex-Mex)","kcal":18,"prot":3,"carb":1,"fat":0.3,"recipe":"1 taza yogur griego 0%, 1/2 taza cilantro fresco, 2 dientes de ajo, jugo de limón, sal"}},"marinades":{"pechuga":{"time":"Mínimo 30 min, ideal toda la noche","note":"Marina en 2-3 cdas de la salsa del día + sal + pimienta. Cocina en air fryer 18-22 min (200°C/400°F) o al horno 22-25 min, volteando a la mitad."},"muslo":{"time":"Mínimo 30 min, ideal toda la noche","note":"La carne más gruesa se beneficia de marinado largo — 2-3 cdas de la salsa del día + sal + pimienta. Ideal en olla lenta (LOW 6-8h) u horno 25-30 min."},"dorada":{"time":"Máximo 15-20 min","note":"¡No marines el pescado por horas! El ácido del limón/yogur lo empieza a \"cocinar\" como ceviche. Solo unos minutos con la salsa + sal antes de air fryer (10-12 min) u horno."},"res_magra":{"time":"Mínimo 30 min, ideal 2-4 horas","note":"La carne de res se ablanda con marinado más largo — 2-3 cdas de la salsa del día + sal + pimienta + un chorrito de limón. Sartén 4-5 min por lado u horno 220°C 12-15 min."}},"sauce_ingredients":{"tzatziki":[["Yogur griego 0%",1,"taza"],["Pepino",0.5,"unidad"],["Ajo",2,"diente"],["Eneldo fresco",1,"cda"],["Limón",1,"unidad"]],"hierbas":[["Yogur griego 0%",1,"taza"],["Perejil fresco",0.25,"taza"],["Eneldo fresco",2,"cda"],["Ajo",1,"diente"],["Limón",1,"unidad"]],"pimiento":[["Yogur griego 0%",1,"taza"],["Pimiento rojo asado",0.5,"unidad"],["Ajo",1,"diente"],["Pimentón dulce",1,"cdta"],["Limón",1,"unidad"]],"curcuma":[["Yogur griego 0%",1,"taza"],["Cúrcuma en polvo",1,"cdta"],["Jengibre fresco",1,"cda"],["Limón",1,"unidad"]],"mostaza":[["Yogur griego 0%",0.75,"taza"],["Mostaza Dijon",2,"cda"],["Monk Fruit o alulosa",1,"cdta"],["Limón",1,"unidad"]],"remolacha":[["Yogur griego 0%",1,"taza"],["Remolacha asada",0.5,"taza"],["Ajo",1,"diente"],["Eneldo fresco",1,"cdta"],["Limón",1,"unidad"]],"jengibresoya":[["Yogur griego 0%",1,"taza"],["Salsa de soya baja en sodio",1,"cda"],["Jengibre fresco",1,"cda"],["Aceite de ajonjolí",1,"cdta"],["Limón",1,"unidad"]],"tomate":[["Tomate triturado",1,"taza"],["Ajo",2,"diente"],["Orégano seco",1,"cdta"],["Albahaca fresca",0.25,"taza"]],"balsamico":[["Yogur griego 0%",1,"taza"],["Vinagre balsámico",2,"cda"],["Monk Fruit o alulosa",1,"cdta"],["Ajo",1,"diente"],["Albahaca fresca",0.25,"taza"]],"cilantro":[["Yogur griego 0%",1,"taza"],["Cilantro fresco",0.5,"taza"],["Ajo",2,"diente"],["Limón",1,"unidad"]]},"sauce_carb":{"tzatziki|papa":"ok","tzatziki|camote":"avoid","tzatziki|bulgur":"ideal","hierbas|papa":"ideal","hierbas|camote":"avoid","hierbas|bulgur":"ok","pimiento|papa":"ok","pimiento|camote":"avoid","pimiento|bulgur":"ideal","curcuma|papa":"ok","curcuma|camote":"ideal","curcuma|bulgur":"ok","mostaza|papa":"ideal","mostaza|camote":"ok","mostaza|bulgur":"ok","remolacha|papa":"ok","remolacha|camote":"ideal","remolacha|bulgur":"ok","jengibresoya|papa":"ok","jengibresoya|camote":"ideal","jengibresoya|bulgur":"ok","tomate|papa":"ok","tomate|camote":"avoid","tomate|bulgur":"ideal","balsamico|papa":"ok","balsamico|camote":"ideal","balsamico|bulgur":"ok","cilantro|papa":"ideal","cilantro|camote":"avoid","cilantro|bulgur":"ok"},"sauce_veg":{"tzatziki|ejotes":"ok","tzatziki|zanahoria":"ok","tzatziki|calabacin":"ideal","tzatziki|pimientos":"ok","tzatziki|tomate":"ok","tzatziki|ensalada_mixta":"ok","hierbas|ejotes":"ideal","hierbas|zanahoria":"ok","hierbas|calabacin":"ok","hierbas|pimientos":"ok","hierbas|tomate":"ok","hierbas|ensalada_mixta":"ok","pimiento|ejotes":"ok","pimiento|zanahoria":"ok","pimiento|calabacin":"ok","pimiento|pimientos":"ideal","pimiento|tomate":"ok","pimiento|ensalada_mixta":"ok","curcuma|ejotes":"ok","curcuma|zanahoria":"ideal","curcuma|calabacin":"ok","curcuma|pimientos":"ok","curcuma|tomate":"avoid","curcuma|ensalada_mixta":"ok","mostaza|ejotes":"ok","mostaza|zanahoria":"ok","mostaza|calabacin":"ok","mostaza|pimientos":"ok","mostaza|tomate":"ok","mostaza|ensalada_mixta":"ideal","remolacha|ejotes":"avoid","remolacha|zanahoria":"avoid","remolacha|calabacin":"avoid","remolacha|pimientos":"avoid","remolacha|tomate":"avoid","remolacha|ensalada_mixta":"ideal","jengibresoya|ejotes":"ok","jengibresoya|zanahoria":"ideal","jengibresoya|calabacin":"ok","jengibresoya|pimientos":"ok","jengibresoya|tomate":"avoid","jengibresoya|ensalada_mixta":"ok","tomate|ejotes":"avoid","tomate|zanahoria":"avoid","tomate|calabacin":"avoid","tomate|pimientos":"avoid","tomate|tomate":"avoid","tomate|ensalada_mixta":"ideal","balsamico|ejotes":"ok","balsamico|zanahoria":"ok","balsamico|calabacin":"ok","balsamico|pimientos":"ok","balsamico|tomate":"ideal","balsamico|ensalada_mixta":"ok","cilantro|ejotes":"ok","cilantro|zanahoria":"ok","cilantro|calabacin":"ok","cilantro|pimientos":"ok","cilantro|tomate":"ideal","cilantro|ensalada_mixta":"ok"},"carb_veg":{"papa|ejotes":"ok","papa|zanahoria":"ok","papa|calabacin":"ok","papa|pimientos":"ok","papa|tomate":"ok","papa|ensalada_mixta":"ok","camote|ejotes":"avoid","camote|zanahoria":"ideal","camote|calabacin":"avoid","camote|pimientos":"ideal","camote|tomate":"avoid","camote|ensalada_mixta":"ideal","bulgur|ejotes":"ok","bulgur|zanahoria":"ok","bulgur|calabacin":"ok","bulgur|pimientos":"ok","bulgur|tomate":"ok","bulgur|ensalada_mixta":"ok"},"protein_carb":{"pechuga|papa":"ok","pechuga|camote":"ok","pechuga|bulgur":"ok","muslo|papa":"ok","muslo|camote":"ok","muslo|bulgur":"ok","dorada|papa":"ok","dorada|camote":"avoid","dorada|bulgur":"ok","res_magra|papa":"ok","res_magra|camote":"ok","res_magra|bulgur":"ok"},"protein_sauce":{"pechuga|tzatziki":"ok","pechuga|hierbas":"ok","pechuga|pimiento":"ok","pechuga|curcuma":"ok","pechuga|mostaza":"ok","pechuga|remolacha":"ok","pechuga|jengibresoya":"ok","pechuga|tomate":"avoid","pechuga|balsamico":"ok","pechuga|cilantro":"ok","muslo|tzatziki":"ok","muslo|hierbas":"ok","muslo|pimiento":"ok","muslo|curcuma":"ok","muslo|mostaza":"ok","muslo|remolacha":"ok","muslo|jengibresoya":"ok","muslo|tomate":"avoid","muslo|balsamico":"ok","muslo|cilantro":"ok","dorada|tzatziki":"ok","dorada|hierbas":"ok","dorada|pimiento":"ok","dorada|curcuma":"ok","dorada|mostaza":"ok","dorada|remolacha":"ok","dorada|jengibresoya":"ok","dorada|tomate":"avoid","dorada|balsamico":"ok","dorada|cilantro":"ok","res_magra|tzatziki":"avoid","res_magra|hierbas":"avoid","res_magra|pimiento":"avoid","res_magra|curcuma":"avoid","res_magra|mostaza":"avoid","res_magra|remolacha":"avoid","res_magra|jengibresoya":"avoid","res_magra|tomate":"ideal","res_magra|balsamico":"avoid","res_magra|cilantro":"avoid"},"marinade_mode":{"tzatziki":{"mode":"neutral","why":"lleva pepino crudo — pensado para servir frío. Si se cocina con la carne, el pepino suelta agua y pierde su punto fresco."},"hierbas":{"mode":"salsa","why":"los marinados de yogur con hierbas frescas son clásicos (ej. estilo persa)."},"pimiento":{"mode":"salsa","why":"al ser una base de pimiento asado ya cocido, funciona bien como marinado."},"curcuma":{"mode":"salsa","why":"el marinado de yogur con cúrcuma y jengibre es clásico (estilo tandoori)."},"mostaza":{"mode":"salsa","why":"los marinados de mostaza son un clásico para pollo y res."},"remolacha":{"mode":"neutral","why":"la remolacha puede teñir y amargar la proteína si se marina mucho tiempo — mejor marinar neutro y bañar con la salsa ya cocida la proteína."},"jengibresoya":{"mode":"salsa","why":"el marinado de jengibre y soya es un clásico asiático."},"balsamico":{"mode":"salsa","why":"los marinados con vinagre balsámico son un clásico italiano."},"cilantro":{"mode":"salsa","why":"el marinado de cilantro y limón es un clásico para pollo y pescado a la parrilla."},"tomate":{"mode":"braise","why":"en vez de marinar, cocina la res directamente sumergida en la salsa de tomate a fuego lento (estilo guisado) — así se impregna mejor que con un marinado corto."}},"fixed_items":[["Avena en hojuelas","420g"],["Leche 1.5% (o alternativa light)","2.8L"],["Proteína en polvo","700g"],["Manzana","14 u"],["Guinda (fresca o congelada)","500g"],["Frambuesa","500g"],["Melón o sandía","1 u grande"],["Semillas (chía, girasol o calabaza)","150g"]]};
+const {weeks, proteins, carbs, veg, sauces, sauce_carb, sauce_veg, carb_veg, marinades, protein_carb, protein_sauce, fixed_items, marinade_mode} = DATA;
+const carbIds = Object.keys(carbs), vegIds = Object.keys(veg), sauceIds = Object.keys(sauces);
+
+const navTabs = document.getElementById("navTabs");
+const sec = document.getElementById("sections");
+const tabs = [{id:"resumen",label:"📋 Matriz y método"},
+  ...weeks.map(w=>({id:"w"+w.week,label:"Semana "+w.week}))];
+tabs.forEach(t=>{
+  const b=document.createElement("button");
+  b.className="tab-btn"+(t.id==="resumen"?" active":"");
+  b.textContent=t.label; b.dataset.tab=t.id;
+  b.onclick=()=>sw(t.id);
+  navTabs.appendChild(b);
+});
+function sw(id){
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active", b.dataset.tab===id));
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  const t=document.getElementById("sec-"+id); if(t) t.classList.add("active");
+  window.scrollTo(0,0);
+}
+function fmtg(g){ return g>=1000 ? (Math.round(g/10)/100)+"kg" : Math.round(g)+"g"; }
+function onTickChange(box){
+  document.getElementById("row_"+box.id).classList.toggle("checked", box.checked);
+}
+function tagFor(v){ return v==="ideal" ? '<span class="ideal">✅ ideal</span>' : v==="avoid" ? '<span class="avoid">🚫 evitar</span>' : '<span class="ok">🆗 bien</span>'; }
+
+// ---- RESUMEN: matriz + método ----
+const r = document.createElement("div"); r.className="section active"; r.id="sec-resumen";
+
+let carbMatrixRows = sauceIds.map(sid=>{
+  let cells = carbIds.map(cid=>{
+    const v = sauce_carb[sid+"|"+cid];
+    return `<td class="${v}">${v==="ideal"?"✅":v==="avoid"?"🚫":"🆗"}</td>`;
+  }).join("");
+  return `<tr><td class="rowhead">${sauces[sid].name}</td>${cells}</tr>`;
+}).join("");
+let carbMatrixHead = `<tr><th></th>${carbIds.map(cid=>`<th>${carbs[cid].name}</th>`).join("")}</tr>`;
+
+let vegMatrixRows = sauceIds.map(sid=>{
+  let cells = vegIds.map(vid=>{
+    const v = sauce_veg[sid+"|"+vid];
+    return `<td class="${v}">${v==="ideal"?"✅":v==="avoid"?"🚫":"🆗"}</td>`;
+  }).join("");
+  return `<tr><td class="rowhead">${sauces[sid].name}</td>${cells}</tr>`;
+}).join("");
+let vegMatrixHead = `<tr><th></th>${vegIds.map(vid=>`<th>${veg[vid].name}</th>`).join("")}</tr>`;
+
+let carbVegRows = carbIds.map(cid=>{
+  let cells = vegIds.map(vid=>{
+    const v = carb_veg[cid+"|"+vid];
+    return `<td class="${v}">${v==="ideal"?"✅":v==="avoid"?"🚫":"🆗"}</td>`;
+  }).join("");
+  return `<tr><td class="rowhead">${carbs[cid].name}</td>${cells}</tr>`;
+}).join("");
+let carbVegHead = `<tr><th></th>${vegIds.map(vid=>`<th>${veg[vid].name}</th>`).join("")}</tr>`;
+
+let protIds = Object.keys(proteins);
+let protCarbRows = protIds.map(pid=>{
+  let cells = carbIds.map(cid=>{
+    const v = protein_carb[pid+"|"+cid];
+    return `<td class="${v}">${v==="ideal"?"✅":v==="avoid"?"🚫":"🆗"}</td>`;
+  }).join("");
+  return `<tr><td class="rowhead">${proteins[pid].name}</td>${cells}</tr>`;
+}).join("");
+let protCarbHead = `<tr><th></th>${carbIds.map(cid=>`<th>${carbs[cid].name}</th>`).join("")}</tr>`;
+
+let protSauceRows = protIds.map(pid=>{
+  let cells = sauceIds.map(sid=>{
+    const v = protein_sauce[pid+"|"+sid];
+    return `<td class="${v}">${v==="ideal"?"✅":v==="avoid"?"🚫":"🆗"}</td>`;
+  }).join("");
+  return `<tr><td class="rowhead">${proteins[pid].name}</td>${cells}</tr>`;
+}).join("");
+let protSauceHead = `<tr><th></th>${sauceIds.map(sid=>`<th style="font-size:9px">${sauces[sid].name}</th>`).join("")}</tr>`;
+
+r.innerHTML = `
+<div class="card">
+  <div class="h2">🧩 Matriz de combinación (4 proteínas · 3 carbs · 6 vegetales · 10 salsas)</div>
+  <div class="ci">4 proteínas: <strong>pechuga, muslo, dorada, res magra (5% grasa)</strong>. 3 carbohidratos: <strong>papa, camote, bulgur</strong>. 6 vegetales: <strong>ejotes, zanahoria, calabacín, pimientos, tomate, ensalada mixta</strong>. 10 salsas: <strong>Tzatziki, Hierbas Verdes, Pimiento Asado Cremosa, Cúrcuma-Jengibre, Mostaza Agridulce, Remolacha Cremosa, Jengibre-Soya, Albahaca-Balsámico, Cilantro-Lima Cremosa, Salsa de Tomate</strong>. La Salsa de Tomate es exclusiva de la res magra — siempre que sale res, va con esta salsa y ensalada mixta. Las otras 9 son suaves, a base de yogur griego 0% y sin picante — combinan con pechuga, muslo y dorada sin restricción.</div>
+  <div class="ci" style="background:#fff6ed;border-color:#f0d0a0">📋 <strong>De tus 8 marinadas:</strong> adapté <em>Basil Balsamic</em> → Albahaca-Balsámico (sin aceite, miel→Monk Fruit). <em>Honey Mustard</em> ya la teníamos (Mostaza Agridulce). <em>Greek</em> y <em>Lemon Chicken</em> ya están cubiertas por Tzatziki y Hierbas Verdes. No agregué <em>Pineapple Teriyaki</em> (piña no está en tu lista de permitidos, y el teriyaki suele llevar azúcar) ni <em>Honey Garlic</em> tal cual (llevaba miel). También sumé <strong>Cilantro-Lima Cremosa</strong> — verifiqué que cilantro + yogur griego es una combinación real y usada (tacos, pollo, pescado, verduras asadas), aunque el nombre "criolla peruana" no era exacto: la salsa verde peruana tradicional lleva ají y suele ser a base de mayonesa, no yogur.</div>
+  <div class="h3">Las 10 salsas</div>
+  <div class="ci" style="background:var(--purple-light);border-color:#ddd0f2;margin-bottom:8px">🥩 <strong>Combinación fija:</strong> cada vez que el plato lleva carne de res magra, la salsa siempre es <strong>Salsa de Tomate</strong> y el vegetal siempre es <strong>Ensalada Mixta</strong> — es su combinación clásica y no rota como las demás.</div>
+  <table class="ref"><tr><th>Estilo</th><th>Salsa</th><th>Ingredientes</th><th>Cal/2cdas</th><th>Prot/2cdas</th></tr>${Object.values(sauces).map(s=>`<tr><td>${s.style}</td><td>${s.name}</td><td>${s.recipe}</td><td>${s.kcal}</td><td>${s.prot}g</td></tr>`).join("")}</table>
+  <div class="h3">Salsa × Carbohidrato</div>
+  <div class="matrix-wrap"><table class="matrix">${carbMatrixHead}${carbMatrixRows}</table></div>
+  <div class="h3">Salsa × Vegetal</div>
+  <div class="matrix-wrap"><table class="matrix">${vegMatrixHead}${vegMatrixRows}</table></div>
+  <div class="h3">Carbohidrato × Vegetal</div>
+  <div class="matrix-wrap"><table class="matrix">${carbVegHead}${carbVegRows}</table></div>
+  <div class="h3">Proteína × Carbohidrato</div>
+  <div class="matrix-wrap"><table class="matrix">${protCarbHead}${protCarbRows}</table></div>
+  <div class="h3">Proteína × Salsa</div>
+  <div class="matrix-wrap"><table class="matrix">${protSauceHead}${protSauceRows}</table></div>
+  <div class="ci" style="background:#fdeeee;border-color:#f0c8c8;margin-top:2px">🚫 <strong>El camote es el ingrediente con más restricciones:</strong> como salsa, solo combina bien con Cúrcuma-Jengibre, Jengibre-Soya, Mostaza Agridulce o Remolacha Cremosa (nunca Tzatziki, Hierbas Verdes, Pimiento Asado ni Salsa de Tomate). Como vegetal, solo combina bien con zanahoria, pimientos y la ensalada mixta — el resto (ejotes, calabacín, tomate cocido) no tanto. Papa y bulgur no tienen ninguna restricción.</div>
+  <div class="ci" style="background:#fdeeee;border-color:#f0c8c8">🐟 <strong>La dorada nunca va con camote</strong> — solo con papa o bulgur.</div>
+  <div class="ci" style="background:var(--purple-light);border-color:#ddd0f2">🌱 <strong>Remolacha Cremosa siempre va con Ensalada Mixta</strong> (que lleva remolacha adentro) — combinación fija, igual que la res con Salsa de Tomate.</div>
+  <div class="ci" style="background:var(--blue-light);border-color:var(--blue-border)">🥗 <strong>Ensalada Mixta siempre va sola</strong> — al ser una ensalada fresca, nunca se mezcla con vegetales cocidos en el mismo plato. Cuando le toca al camote, alterna entre Ensalada Mixta sola o el dúo cocido Zanahoria+Pimientos, nunca los dos juntos.</div>
+  <div class="ci" style="background:var(--orange-light);border-color:#f0d0a0">🫚 <strong>Las salsas con jengibre (Cúrcuma-Jengibre, Jengibre-Soya) nunca llevan tomate como vegetal</strong> — solo ejotes, zanahoria, calabacín o pimientos.</div>
+  <div class="ci" style="background:var(--orange-light);border-color:#f0d0a0">🥕 <strong>El dúo Zanahoria+Pimientos cocido solo va con salsas más dulces</strong> (Mostaza Agridulce, Jengibre-Soya). Con Cúrcuma-Jengibre —cálida pero no dulce— el camote siempre lleva Ensalada Mixta sola.</div>
+  <div class="ci" style="background:var(--green-light);border-color:var(--green-border)">🧊 <strong>El último plato de la semana (el congelado) siempre lleva Ensalada Mixta</strong> — no necesita cocción extra, ideal para el día más viejo del lote.</div>
+  <div class="ci" style="background:#fff6ed;border-color:#f0d0a0"><strong>⚠️ Sobre el borsó (arveja/guisante):</strong> no lo agregué todavía — botánicamente es legumbre, misma familia que el "bab" (frijol) de tu lista de "no permitidos". Confírmamelo y lo sumo.</div>
+</div>
+<div class="card">
+  <div class="h2">Proteína + salsa se marinan juntas y se repiten — carbohidrato y vegetal cambian</div>
+  <div class="ci">Cada plato se cocina una sola vez, pero ahora la <strong>proteína se marina en la misma salsa</strong> que va a llevar toda su vida (cena + almuerzo del día siguiente) — así el marinado tiene sentido real. El <strong>carbohidrato y el vegetal cambian entre la cena y el almuerzo siguiente</strong>, dándote variedad real dentro del mismo plato sin duplicar el trabajo de marinar/cocinar la proteína. La salsa siempre determina qué carbohidratos son válidos para las dos comidas (el camote solo aparece si la salsa lo permite).</div>
+</div>
+<div class="card">
+  <div class="h2">¿Cómo funciona?</div>
+  <div class="ci"><strong>La cena de hoy es el mismo plato que el almuerzo de mañana</strong> (sobras) — así solo cocinas 2 veces por semana y cada plato rinde para 2 comidas × 2 personas (4 porciones).</div>
+  <div class="ci"><strong>Domingo</strong> cocinas 3 platos → cubren de domingo en la noche a miércoles al mediodía. <strong>Miércoles</strong> cocinas 4 platos → cubren de miércoles en la noche a domingo al mediodía (el último se guarda congelado, son los días 3-4).</div>
+  <div class="h3">Métodos de cocción</div>
+  <div class="method-grid">
+    <div class="method-card"><div class="mname">Air Fryer</div><div class="msub">Freidora de aire</div><div class="mtext">Ideal para pechuga y dorada. Precalienta a 200°C/400°F. Pollo: 18-22 min volteando a la mitad · Pescado: 10-12 min.</div></div>
+    <div class="method-card"><div class="mname">Olla lenta</div><div class="msub">Slow cooker</div><div class="mtext">Perfecta para el muslo desmechado. Cocina en LOW 6-8 hrs o HIGH 3-4 hrs.</div></div>
+    <div class="method-card"><div class="mname">Horno</div><div class="msub">Batch cooking</div><div class="mtext">El método más práctico para las cantidades grandes. Bandeja con papel pergamino. Pollo: 200°C/400°F por 22-25 min. Vegetales en otra bandeja al mismo tiempo.</div></div>
+  </div>
+  <div class="tip-box"><strong>Tip general:</strong> usa termómetro de cocina — pollo a 74°C/165°F interno, pescado hasta que esté opaco y se desmenuce fácil. Guarda en refrigerador 3-5 días o congela hasta 3 meses (descongela 24h antes). Nunca congeles las salsas de yogur — cambian de textura; prepáralas frescas cada sesión.</div>
+</div>
+<div class="card">
+  <div class="h2">🧂 Cómo marinar cada proteína</div>
+  <div class="ci">Por defecto, usa 2-3 cdas de la <strong>misma salsa del día</strong> como base de marinado + sal y pimienta. El tiempo de marinado cambia mucho según la proteína:</div>
+  <div class="method-grid">
+    ${Object.entries(marinades).map(([pid,m])=>`
+    <div class="method-card"><div class="mname">${proteins[pid].name}</div><div class="msub">${m.time}</div><div class="mtext">${m.note}</div></div>`).join("")}
+  </div>
+  <div class="ci" style="background:#fdeeee;border-color:#f0c8c8;margin-top:10px">🚫 <strong>No todas las salsas sirven como marinado:</strong>
+    <ul style="margin:6px 0 0 18px;padding:0">
+      ${Object.entries(marinade_mode).filter(([sid,mm])=>mm.mode!=="salsa").map(([sid,mm])=>
+        `<li style="margin-bottom:4px"><strong>${sauces[sid].name}</strong> — ${mm.mode==="neutral"?"marina en ajo+limón+sal+pimienta, sirve la salsa fresca aparte":"cocina la proteína directo en la salsa, sin marinar"}: ${mm.why}</li>`
+      ).join("")}
+    </ul>
+  </div>
+</div>`;
+sec.appendChild(r);
+
+// ---- WEEKS ----
+weeks.forEach(w=>{
+  const el = document.createElement("div"); el.className="section"; el.id="sec-w"+w.week;
+
+  const dayTotals = {};
+  w.meals.forEach(m=>{ (dayTotals[m.day]=dayTotals[m.day]||[0,0])[0]+=m.kcal; dayTotals[m.day][1]+=m.prot; });
+  const avgKcalDay = Math.round(Object.values(dayTotals).reduce((s,v)=>s+v[0],0)/7);
+  const avgProtDay = Math.round(Object.values(dayTotals).reduce((s,v)=>s+v[1],0)/7);
+
+  let tickIdCounter = 0;
+  function tickRow(name, amt, groupId){
+    const id = `tick_${groupId}_${tickIdCounter++}`;
+    return `<label class="tick-row" id="row_${id}" for="${id}">
+      <input type="checkbox" id="${id}" onchange="onTickChange(this)">
+      <span class="tick-name">${name}</span><span class="tick-amt">${amt}</span>
+    </label>`;
+  }
+
+  function cookTotalBlock(shop, nDishes){
+    let rows = "";
+    shop.proteinas.forEach(([name,g])=>{ rows += `<div class="batch-row"><span class="batch-name">${name}</span><span class="batch-amt">${fmtg(g)}</span></div>`; });
+    shop.carbs.forEach(([name,g])=>{ rows += `<div class="batch-row"><span class="batch-name">${name}</span><span class="batch-amt">${fmtg(g)}</span></div>`; });
+    shop.veg.forEach(([name,g])=>{ rows += `<div class="batch-row"><span class="batch-name">${name}</span><span class="batch-amt">${fmtg(g)}</span></div>`; });
+    return `<div class="tip-box">
+      <strong>🔥 Total combinado a cocinar de una vez (${nDishes} platos juntos):</strong>
+      <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:8px 10px;margin-top:8px">${rows}</div>
+      <div style="margin-top:8px;font-size:11.5px;opacity:.85">Mete todas las proteínas en bandejas separadas (marinadas cada una en su salsa), y todos los carbohidratos y vegetales en sus propias bandejas — todo al horno/air fryer a la vez, y luego repartes por plato.</div>
+    </div>`;
+  }
+
+  function shopBlock(label, cls, shop, groupId){
+    let items = [];
+    shop.proteinas.forEach(([name,g])=>items.push([name, fmtg(g)]));
+    shop.carbs.forEach(([name,g])=>items.push([name, fmtg(g)]));
+    shop.veg.forEach(([name,g])=>items.push([name, fmtg(g)]));
+    let rows = items.map(([n,a])=>tickRow(n,a,groupId)).join("");
+    let salsaRows = "";
+    if(shop.salsas && shop.salsas.length){
+      salsaRows = `<div style="font-size:10.5px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.4px;margin:8px 0 2px">🥣 Para las salsas</div>`
+        + shop.salsas.map(([n,a])=>tickRow(n,a,groupId)).join("");
+    }
+    return `<div class="session-card ${cls}"><span class="pill ${cls}">${label}</span><div class="session-title">🛒 Compra para esta sesión</div>${rows}${salsaRows}</div>`;
+  }
+
+  const dayNamesByDish = {};
+  w.meals.forEach(m=>{ (dayNamesByDish[m.dish]=dayNamesByDish[m.dish]||[]).push(m); });
+
+  function dishCardHtml(did){
+    const slots = dayNamesByDish[did];
+    const cena = slots.find(x=>x.tipo==="Cena");
+    const alm = slots.find(x=>x.tipo==="Almuerzo");
+    const p = proteins[cena.protein], s = sauces[cena.sauce];
+    const protBatch = w.dish_protein_batch[did];
+
+    function mealBlock(m, label){
+      const c = carbs[m.carb];
+      const vegNames = m.veg_mix.map(([vid,g])=>veg[vid].name).join(" + ");
+      const vegGrams = m.veg_mix.map(([vid,g])=>`${g}g ${veg[vid].name.toLowerCase()}`).join(", ");
+      const cookVegStr = m.cook_veg_mix.map(([vid,g])=>`${g}g ${veg[vid].name.toLowerCase()}`).join(" · ");
+      return `
+      <div style="margin-top:8px">
+        <div style="font-size:11px;font-weight:800;color:var(--dark);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">${label} · ${m.day}</div>
+        <div class="sudoku-grid" style="grid-template-columns:1fr 1fr">
+          <div class="sd-cell sd-carb"><div class="sd-cat">Carbohidrato</div><div class="sd-name">${c.name}</div><div class="sd-sub">${c.raw_g}g crudo → ~${c.cooked_g}g cocido</div></div>
+          <div class="sd-cell sd-veg"><div class="sd-cat">Vegetales</div><div class="sd-name" style="font-size:11px">${vegNames}</div><div class="sd-sub">${vegGrams}</div></div>
+        </div>
+        <div class="cook-amount" style="margin-top:6px">🍳 Para 2 personas: ${m.cook_carb_g}g ${c.name.toLowerCase()} crudo (~${c.cooked_g*2}g cocido) · ${cookVegStr}</div>
+        <div style="text-align:right;font-size:11px;font-weight:700;color:var(--green);margin-top:3px">${m.kcal} kcal · ${m.prot}g prot</div>
+      </div>`;
+    }
+
+    const mm = marinade_mode[cena.sauce];
+    let marinadeText;
+    if(mm.mode === "salsa"){
+      marinadeText = `— marina toda la tanda en la salsa antes de cocinar.`;
+    } else if(mm.mode === "neutral"){
+      marinadeText = `— <strong>no marines en esta salsa:</strong> marina en ajo + limón + sal + pimienta, cocina, y sirve la ${s.name.toLowerCase()} fresca aparte (${mm.why})`;
+    } else {
+      marinadeText = `— <strong>no se marina:</strong> cocina la proteína directamente sumergida en la salsa (${mm.why})`;
+    }
+
+    return `
+    <div class="dish-card">
+      <div class="dish-head">
+        <div><span class="dish-span">${cena.day} Cena → ${alm.day} Almuerzo</span>${cena.frozen?'<span class="frozen-tag">🧊 congelado</span>':''}</div>
+      </div>
+      <div class="sudoku-grid" style="grid-template-columns:1fr 1fr">
+        <div class="sd-cell sd-prot"><div class="sd-cat">Proteína${mm.mode==="salsa"?" (marinada, se repite)":""}</div><div class="sd-name">${p.name}</div><div class="sd-sub">${p.raw_g}g crudo → ~${p.cooked_g}g cocido</div></div>
+        <div class="sd-cell sd-sauce"><div class="sd-cat">Salsa (acompañamiento${mm.mode==="salsa"?" + marinado":""})</div><div class="sd-name">${s.name}</div><div class="sd-sub">2 cdas/porción</div></div>
+      </div>
+      <div class="cook-amount">🧂 <strong>Proteína a cocinar (rinde 4 porciones):</strong> ${protBatch}g ${p.name.toLowerCase()} crudo (~${p.cooked_g*4}g cocido) ${marinadeText}</div>
+      ${mealBlock(cena, "🌙 Cena")}
+      ${mealBlock(alm, "☀️ Almuerzo del día siguiente")}
+    </div>`;
+  }
+
+  const sunDishIds = Object.keys(dayNamesByDish).filter(id=>id.startsWith("S"));
+  const wedDishIds = Object.keys(dayNamesByDish).filter(id=>id.startsWith("W"));
+  const sunDishCards = sunDishIds.map(dishCardHtml).join("");
+  const wedDishCards = wedDishIds.map(dishCardHtml).join("");
+
+  const thisWeekRows = Object.entries(w.dish_info_summary).map(([slot,fx])=>
+    `<tr><td class="rowhead">${slot}</td><td>${proteins[fx.protein].name}</td><td>${sauces[fx.sauce].name}</td></tr>`
+  ).join("");
+
+  el.innerHTML = `
+    <div class="card">
+      <div class="h2">Semana ${w.week}</div>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="val">~${avgKcalDay}</div><div class="lbl">kcal/día (comidas principales)</div></div>
+        <div class="stat-box"><div class="val">~${avgProtDay}g</div><div class="lbl">proteína/día (comidas principales)</div></div>
+        <div class="stat-box"><div class="val">+608 / +40g</div><div class="lbl">desayuno + meriendas fijos</div></div>
+      </div>
+      <div class="h3">Proteína y salsa de esta semana (se marinan juntas, se repiten en cena+almuerzo)</div>
+      <table class="matrix"><tr><th>Plato</th><th>Proteína</th><th>Salsa</th></tr>${thisWeekRows}</table>
+      <div class="h3" style="margin-top:14px">🗓️ Preparación 1 — Domingo (3 platos, cubren hasta el miércoles al mediodía)</div>
+      ${shopBlock("Domingo","dom", w.sunday_shopping, "w"+w.week+"s")}
+      <div class="h3" style="margin-top:14px">🗓️ Preparación 2 — Miércoles (4 platos, cubren hasta el domingo al mediodía)</div>
+      ${shopBlock("Miércoles","mie", w.wednesday_shopping, "w"+w.week+"m")}
+      <div class="h3" style="margin-top:14px">🥣 Desayuno y meriendas (fijo toda la semana, 2 personas)</div>
+      <div class="session-card" style="background:var(--gray-light)">
+        ${fixed_items.map(([n,a])=>tickRow(n,a,"w"+w.week+"fixed")).join("")}
+      </div>
+    </div>
+    <div class="card">
+      <div class="h3">🗓️ Preparación 1 — Domingo: qué cocinar, plato por plato</div>
+      <div class="ci" style="margin-bottom:10px">Cada tarjeta = 1 plato que cubre la cena de un día y el almuerzo del día siguiente (sobras). Cocinas 4 porciones de una vez.</div>
+      ${cookTotalBlock(w.sunday_shopping, 3)}
+      ${sunDishCards}
+    </div>
+    <div class="card">
+      <div class="h3">🗓️ Preparación 2 — Miércoles: qué cocinar, plato por plato</div>
+      <div class="ci" style="margin-bottom:10px">Igual que el domingo: cada tarjeta cubre 2 comidas. El último plato (🧊) se separa congelado desde el miércoles.</div>
+      ${cookTotalBlock(w.wednesday_shopping, 4)}
+      ${wedDishCards}
+    </div>`;
+  sec.appendChild(el);
+});
+</script>
+</body></html>
